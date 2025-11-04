@@ -37,4 +37,44 @@ public class ScheduleService {
                 saved.getModifiedAt()
         );
     }
+
+    // Lv 2. 일정 조회 - 전체 일정 조회
+    @Transactional(readOnly = true)
+    public List<GetOneScheduleResponse> getAll(String name) {
+        // 전체 일정 조회하고, 수정일 기준 내림차순으로 정렬
+        List<Schedule> schedules = name==null // name이 null이면 전체 조회, 아니면 작성자명을 기준으로 조회
+                ? scheduleRepository.findAllByOrderByModifiedAtDesc()
+                : scheduleRepository.findAllByNameOrderByModifiedAtDesc(name);
+        List<GetOneScheduleResponse> dtos = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+            dtos.add(new GetOneScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getName(),
+                    schedule.getCreatedAt(),
+                    schedule.getModifiedAt()
+            ));
+        }
+        return dtos;
+    }
+
+    // Lv 2. 일정 조회 - 선택 일정 조회
+    @Transactional(readOnly = true)
+    public GetOneScheduleResponse getOne(Long id) {
+        // id를 기준으로 조회, null이면 예외 처리
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("없는 유저입니다.")
+        );
+
+        return new GetOneScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getName(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
 }
