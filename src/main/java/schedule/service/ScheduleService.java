@@ -3,9 +3,7 @@ package schedule.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import schedule.dto.CreateScheduleRequest;
-import schedule.dto.CreateScheduleResponse;
-import schedule.dto.GetOneScheduleResponse;
+import schedule.dto.*;
 import schedule.entity.Schedule;
 import schedule.repository.ScheduleRepository;
 
@@ -27,7 +25,7 @@ public class ScheduleService {
                 request.getPassword()
         );
 
-        Schedule saved = scheduleRepository.save(schedule);
+        Schedule saved = scheduleRepository.save(schedule); // 일정 저장
         return new CreateScheduleResponse(
                 saved.getId(),
                 saved.getTitle(),
@@ -41,8 +39,8 @@ public class ScheduleService {
     // Lv 2. 일정 조회 - 전체 일정 조회
     @Transactional(readOnly = true)
     public List<GetOneScheduleResponse> getAll(String name) {
-        // 전체 일정 조회하고, 수정일 기준 내림차순으로 정렬
-        List<Schedule> schedules = name==null // name이 null이면 전체 조회, 아니면 작성자명을 기준으로 조회
+        // 전체 일정 조회하고, '수정일' 기준 내림차순으로 정렬
+        List<Schedule> schedules = name==null // name이 null이면 전체 조회, 아니면 '작성자명'을 기준으로 조회
                 ? scheduleRepository.findAllByOrderByModifiedAtDesc()
                 : scheduleRepository.findAllByNameOrderByModifiedAtDesc(name);
         List<GetOneScheduleResponse> dtos = new ArrayList<>();
@@ -63,12 +61,40 @@ public class ScheduleService {
     // Lv 2. 일정 조회 - 선택 일정 조회
     @Transactional(readOnly = true)
     public GetOneScheduleResponse getOne(Long id) {
-        // id를 기준으로 조회, null이면 예외 처리
+        // 'id'를 기준으로 조회, null이면 예외 처리
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
                 () -> new IllegalStateException("없는 유저입니다.")
         );
 
         return new GetOneScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getName(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
+
+    // Lv 3. 일정 수정
+    @Transactional
+    public UpdateScheduleResponse update(Long id, UpdateScheduleRequest request) {
+        // 'id'를 기준으로 조회, null이면 예외 처리
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("없는 유저입니다.")
+        );
+
+        if (!request.getPassword().equals(schedule.getPassword())) // 비밀번호 다르면 예외 처리
+            throw new IllegalStateException("비밀번호를 틀렸습니다.");
+
+        schedule.update( // 선택한 일정 내용 중 '일정 제목', '작성자명'만 수정 가능
+                request.getTitle(),
+                request.getName()
+        );
+
+        scheduleRepository.flush(); // 변경내용 반영
+
+        return new UpdateScheduleResponse(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
