@@ -4,7 +4,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CreateScheduleResponse {
+public class ScheduleResponse {
     private final Long id;
     private final String title;
     private final String content;
@@ -12,7 +12,7 @@ public class CreateScheduleResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public CreateScheduleResponse(Long id, String title, String content, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ScheduleResponse(Long id, String title, String content, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.content = content;
