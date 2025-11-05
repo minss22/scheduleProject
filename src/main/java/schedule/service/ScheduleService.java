@@ -18,22 +18,10 @@ public class ScheduleService {
     // Lv 1. 일정 생성
     @Transactional
     public ScheduleResponse save(CreateScheduleRequest request) {
-        Schedule schedule = new Schedule(
-                request.getTitle(),
-                request.getContent(),
-                request.getName(),
-                request.getPassword()
-        );
-
+        Schedule schedule = new Schedule(request); // DTO를 Schedule로 변경
         Schedule saved = scheduleRepository.save(schedule); // 일정 저장
-        return new ScheduleResponse(
-                saved.getId(),
-                saved.getTitle(),
-                saved.getContent(),
-                saved.getName(),
-                saved.getCreatedAt(),
-                saved.getModifiedAt()
-        );
+
+        return new ScheduleResponse(saved); // 다시 DTO로 변경하여 리턴
     }
 
     // Lv 2. 일정 조회 - 전체 일정 조회
@@ -43,19 +31,8 @@ public class ScheduleService {
         List<Schedule> schedules = name==null // name이 null이면 전체 조회, 아니면 '작성자명'을 기준으로 조회
                 ? scheduleRepository.findAllByOrderByModifiedAtDesc()
                 : scheduleRepository.findAllByNameOrderByModifiedAtDesc(name);
-        List<ScheduleResponse> dtos = new ArrayList<>();
 
-        for (Schedule schedule : schedules) {
-            dtos.add(new ScheduleResponse(
-                    schedule.getId(),
-                    schedule.getTitle(),
-                    schedule.getContent(),
-                    schedule.getName(),
-                    schedule.getCreatedAt(),
-                    schedule.getModifiedAt()
-            ));
-        }
-        return dtos;
+        return schedules.stream().map(ScheduleResponse::new).toList(); // List<ScheduleResponse>로 변경하여 리턴
     }
 
     // Lv 2. 일정 조회 - 선택 일정 조회
@@ -66,14 +43,7 @@ public class ScheduleService {
                 () -> new IllegalStateException("없는 유저입니다.")
         );
 
-        return new ScheduleResponse(
-                schedule.getId(),
-                schedule.getTitle(),
-                schedule.getContent(),
-                schedule.getName(),
-                schedule.getCreatedAt(),
-                schedule.getModifiedAt()
-        );
+        return new ScheduleResponse(schedule);
     }
 
     // Lv 3. 일정 수정
@@ -87,21 +57,12 @@ public class ScheduleService {
         if (!request.getPassword().equals(schedule.getPassword())) // 비밀번호 다르면 예외 처리
             throw new IllegalStateException("비밀번호를 틀렸습니다.");
 
-        schedule.update( // 선택한 일정 내용 중 '일정 제목', '작성자명'만 수정 가능
-                request.getTitle(),
-                request.getName()
-        );
+        // 선택한 일정에서 '일정 제목', '작성자명'만 수정 가능
+        schedule.update(request.getTitle(), request.getName());
 
         scheduleRepository.flush(); // 변경내용 반영
 
-        return new ScheduleResponse(
-                schedule.getId(),
-                schedule.getTitle(),
-                schedule.getContent(),
-                schedule.getName(),
-                schedule.getCreatedAt(),
-                schedule.getModifiedAt()
-        );
+        return new ScheduleResponse(schedule);
     }
 
     // Lv 4. 일정 삭제

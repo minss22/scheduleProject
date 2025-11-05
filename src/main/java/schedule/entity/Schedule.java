@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import schedule.dto.CreateScheduleRequest;
 
 @Getter
 @Entity
@@ -22,11 +23,11 @@ public class Schedule extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String password; // 비밀번호
 
-    public Schedule(String title, String content, String name, String password) {
-        this.title = title;
-        this.content = content;
-        this.name = name;
-        this.password = password;
+    public Schedule(CreateScheduleRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.name = request.getName();
+        this.password = request.getPassword();
     }
 
     public void update(String title, String name) {
