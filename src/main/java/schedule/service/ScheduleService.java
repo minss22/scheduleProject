@@ -6,8 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import schedule.dto.*;
 import schedule.entity.Schedule;
 import schedule.repository.ScheduleRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,10 +36,7 @@ public class ScheduleService {
     // Lv 2. 일정 조회 - 선택 일정 조회
     @Transactional(readOnly = true)
     public ScheduleResponse getOne(Long id) {
-        // 'id'를 기준으로 조회, null이면 예외 처리
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("없는 유저입니다.")
-        );
+        Schedule schedule = findOrThrow(id); // 일정 조회
 
         return new ScheduleResponse(schedule);
     }
@@ -50,16 +45,11 @@ public class ScheduleService {
     @Transactional
     public ScheduleResponse update(Long id, UpdateScheduleRequest request) {
         // 'id'를 기준으로 조회, null이면 예외 처리
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("없는 유저입니다.")
-        );
-
-        if (!request.getPassword().equals(schedule.getPassword())) // 비밀번호 다르면 예외 처리
-            throw new IllegalStateException("비밀번호를 틀렸습니다.");
+        Schedule schedule = findOrThrow(id); // 일정 조회
+        checkPassword(schedule.getPassword(), request.getPassword()); // 비밀번호 확인
 
         // 선택한 일정에서 '일정 제목', '작성자명'만 수정 가능
         schedule.update(request.getTitle(), request.getName());
-
         scheduleRepository.flush(); // 변경내용 반영
 
         return new ScheduleResponse(schedule);
@@ -68,13 +58,21 @@ public class ScheduleService {
     // Lv 4. 일정 삭제
     @Transactional
     public void delete(Long id, DeleteScheduleRequest request) {
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("없는 유저입니다.")
-        );
-
-        if (!request.getPassword().equals(schedule.getPassword())) // 비밀번호 다르면 예외 처리
-            throw new IllegalStateException("비밀번호를 틀렸습니다.");
+        Schedule schedule = findOrThrow(id); // 일정 조회
+        checkPassword(schedule.getPassword(), request.getPassword()); // 비밀번호 확인
 
         scheduleRepository.deleteById(id);
+    }
+
+    // 'id'를 기준으로 조회, null이면 예외 처리
+    private Schedule findOrThrow(Long id) {
+        return scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("없는 유저입니다.")
+        );
+    }
+
+    private void checkPassword(String savedPw, String requestPw) {
+        if (!savedPw.equals(requestPw)) // 비밀번호 다르면 예외 처리
+            throw new IllegalStateException("비밀번호를 틀렸습니다.");
     }
 }
