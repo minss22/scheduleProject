@@ -103,4 +103,17 @@ public class ScheduleService {
                 schedule.getModifiedAt()
         );
     }
+
+    // Lv 4. 일정 삭제
+    @Transactional
+    public void delete(Long id, DeleteScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("없는 유저입니다.")
+        );
+
+        if (!request.getPassword().equals(schedule.getPassword())) // 비밀번호 다르면 예외 처리
+            throw new IllegalStateException("비밀번호를 틀렸습니다.");
+
+        scheduleRepository.deleteById(id);
+    }
 }
