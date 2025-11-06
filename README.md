@@ -165,12 +165,10 @@
 
 ### 5. 일정 수정
 <img width="1045" height="646" alt="Image" src="https://github.com/user-attachments/assets/c65b5549-659f-4302-9974-6c37f63ff176" />
-
-#### 수정일 기준으로 내림차순 정렬 확인
+#### ▼ 수정일 기준으로 내림차순 정렬 확인
 <img width="1034" height="844" alt="Image" src="https://github.com/user-attachments/assets/d027fc06-6488-4f7c-91fa-4c5da6cf7c64" />
 
 ### 6. 일정 삭제
 <img width="1043" height="433" alt="Image" src="https://github.com/user-attachments/assets/d17c2fdd-78bd-4964-89f0-1cefe6d0146c" />
-
-#### 삭제 확인
+#### ▼ 삭제 확인
 <img width="1032" height="658" alt="Image" src="https://github.com/user-attachments/assets/367e4b5d-e031-4d24-8055-a758b7c24f30" />
