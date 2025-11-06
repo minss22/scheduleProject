@@ -149,3 +149,28 @@
 - **선택한 일정 삭제**
     - 선택한 일정을 삭제
     - 서버에 일정 삭제을 요청할 때 `비밀번호`를 함께 전달
+
+## 💻 결과
+### 1. 일정 생성
+<img width="1034" height="675" alt="Image" src="https://github.com/user-attachments/assets/7b5669cb-6d15-47f1-a2cc-9f569f8fb505" />
+
+### 2. 전체 일정 조회
+<img width="1035" height="843" alt="Image" src="https://github.com/user-attachments/assets/be91e908-6c7a-4c20-a56b-24b14bd1d1a5" />
+
+### 3. 작성자의 전체 일정 조회
+<img width="1037" height="854" alt="Image" src="https://github.com/user-attachments/assets/7df6a4ce-c5fa-42b1-aa29-3b853321c1cc" />
+
+### 4. 일정 단건 조회
+<img width="1037" height="444" alt="Image" src="https://github.com/user-attachments/assets/a277bc66-f08c-4a08-8fa8-d1234096be23" />
+
+### 5. 일정 수정
+<img width="1045" height="646" alt="Image" src="https://github.com/user-attachments/assets/c65b5549-659f-4302-9974-6c37f63ff176" />
+
+#### 수정일 기준으로 내림차순 정렬 확인
+<img width="1034" height="844" alt="Image" src="https://github.com/user-attachments/assets/d027fc06-6488-4f7c-91fa-4c5da6cf7c64" />
+
+### 6. 일정 삭제
+<img width="1043" height="433" alt="Image" src="https://github.com/user-attachments/assets/d17c2fdd-78bd-4964-89f0-1cefe6d0146c" />
+
+#### 삭제 확인
+<img width="1032" height="658" alt="Image" src="https://github.com/user-attachments/assets/367e4b5d-e031-4d24-8055-a758b7c24f30" />
