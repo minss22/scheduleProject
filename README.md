@@ -61,7 +61,7 @@
 | **상세 설명**         | 비밀번호 검증 필요                  |
 
 ## 🗂️ ERD
-
+<img width="346" height="422" alt="Image" src="https://github.com/user-attachments/assets/5b0fa224-5c2d-4484-8a67-8b3a87adcb97" />
 
 ## 🧱 프로젝트 구조
 ```
