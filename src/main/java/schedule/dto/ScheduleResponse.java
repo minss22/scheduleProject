@@ -2,9 +2,12 @@ package schedule.dto;
 
 import lombok.Getter;
 import schedule.entity.Schedule;
-
 import java.time.LocalDateTime;
 
+/**
+ * ScheduleResponse 클래스
+ * - 일정 응답 정보를 담는 DTO 클래스
+ */
 @Getter
 public class ScheduleResponse {
     private final Long id;
@@ -14,6 +17,10 @@ public class ScheduleResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
+    /**
+     * Schedule Entity를 이용한 생성자
+     * @param schedule 일정 Entity
+     */
     public ScheduleResponse(Schedule schedule) {
         this.id = schedule.getId();
         this.title = schedule.getTitle();

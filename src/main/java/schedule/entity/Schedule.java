@@ -6,6 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import schedule.dto.CreateScheduleRequest;
 
+/**
+ * Schedule 클래스
+ * - 일정 정보를 저장하는 Entity 클래스
+ * - 일정 제목, 일정 내용, 작성자명, 비밀번호 저장
+ * - 고유 식별자(ID)는 자동으로 생성하여 저장
+ * - 작성일, 수정일 필드는 BaseEntity를 상속받아 자동으로 저장
+ */
 @Getter
 @Entity
 @Table(name = "schedules")
@@ -13,7 +20,7 @@ import schedule.dto.CreateScheduleRequest;
 public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 일정 고유 ID
     @Column(length = 50, nullable = false)
     private String title; // 일정 제목
     @Column(nullable = false)
@@ -23,6 +30,11 @@ public class Schedule extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String password; // 비밀번호
 
+    /**
+     * ScheduleRequest DTO를 이용한 생성자
+     * - 일정 제목, 일정 내용, 작성자명, 비밀번호 저장
+     * @param request 일정 생성 Request DTO
+     */
     public Schedule(CreateScheduleRequest request) {
         this.title = request.getTitle();
         this.content = request.getContent();
@@ -30,6 +42,11 @@ public class Schedule extends BaseEntity {
         this.password = request.getPassword();
     }
 
+    /**
+     * 일정 제목, 작성자명 수정
+     * @param title 제목
+     * @param name 작성자명
+     */
     public void update(String title, String name) {
         this.title = title;
         this.name = name;
